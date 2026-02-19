@@ -923,10 +923,18 @@ def ssrf_lab(request):
             file=request.POST["blog"]
             try :
                 dirname = os.path.dirname(__file__)
-                filename = os.path.join(dirname, file)
-                file = open(filename,"r")
-                data = file.read()
-                return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
+                # Normalize the file path to remove traversal sequences
+                normalized_path = os.path.normpath(os.path.join(dirname, file))
+                absolute_base = os.path.abspath(dirname)
+                absolute_path = os.path.abspath(normalized_path)
+                
+                # Check if the resolved absolute path is within the allowed base directory
+                if not absolute_path.startswith(absolute_base + os.sep):
+                    # Optionally log an incident here
+                    return render(request, 'Lab/ssrf/ssrf_lab.html', {'blog': 'Invalid file access request'})
+                file_handle = open(absolute_path, "r")
+                data = file_handle.read()
+                return render(request, 'Lab/ssrf/ssrf_lab.html', {'blog': data})
             except:
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
     else:

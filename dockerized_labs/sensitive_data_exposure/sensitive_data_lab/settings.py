@@ -9,6 +9,9 @@ SECRET_KEY = 'django-insecure-key-for-demonstration-only'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# Ensure that DEBUG is set to False in production environments.
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['*']
 

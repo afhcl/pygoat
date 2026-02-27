@@ -17,19 +17,21 @@
                 localStorage.setItem('theme', newTheme);
                 
                 const themeToggle = document.querySelector('.theme-toggle');
-                themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+                themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
             });
         }
 
         // Set theme on page load
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            let savedTheme = localStorage.getItem('theme') || 'light';
+            const allowedThemes = ['light', 'dark'];
+            if (!allowedThemes.includes(savedTheme)) { savedTheme = 'light'; }
             const html = document.documentElement;
             
             requestAnimationFrame(() => {
                 html.setAttribute('data-theme', savedTheme);
                 const themeToggle = document.querySelector('.theme-toggle');
-                themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+                themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
             });
         });
     </script></body>

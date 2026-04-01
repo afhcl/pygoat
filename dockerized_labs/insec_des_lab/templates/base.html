@@ -23,9 +23,14 @@
 
         // Set theme on page load
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            let savedTheme = localStorage.getItem('theme') || 'light';
             const html = document.documentElement;
             
+            // Allowed themes; if savedTheme is not allowed, default to 'light'
+            const allowedThemes = ['dark', 'light'];
+            if (!allowedThemes.includes(savedTheme)) {
+                savedTheme = 'light';
+            }
             requestAnimationFrame(() => {
                 html.setAttribute('data-theme', savedTheme);
                 const themeToggle = document.querySelector('.theme-toggle');
